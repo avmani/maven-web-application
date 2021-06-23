@@ -98,14 +98,14 @@
 	
 	    <repository>
 	      <id>nexus</id>
-	      <name>Project1</name>
-	      <url>http://15.207.112.99:8081/repository/project1-release/</url>
+	      <name>wallmart</name>
+	      <url>http://15.207.112.99:8081/repository/wallmart-release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
-	      <name>Project1</name>
-	      <url>http://15.207.112.99:8081/repository/project1-snapshot/</url>
+	      <name>wallmart</name>
+	      <url>http://15.207.112.99:8081/repository/wallmart-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
