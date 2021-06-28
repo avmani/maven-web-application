@@ -1,0 +1,28 @@
+node{
+
+def mavenHome = tool name: "maven 3.8.1"
+
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '10', artifactNumToKeepStr: '5', daysToKeepStr: '10', numToKeepStr: '5')), pipelineTriggers([pollSCM('* * * * *')])])
+    stage('CheckoutCode'){
+      git branch: 'development', credentialsId: 'f1ed030d-76b6-476a-b5f5-aed5db184b94', url: 'https://github.com/avmani/maven-web-application.git'  
+    }
+    stage("Build"){
+        sh "${mavenHome}/bin/mvn clean package"
+    stage("ExecuteSonarQubeReport"){
+        sh "${mavenHome}/bin/mvn sonar:sonar"
+    stage("UploadArtifactIntoNexus"){
+        sh "${mavenHome}/bin/mvn deploy"
+    stage("DeployAppIntoTomcatServer"){
+        sshagent(['0daf0a69-c8bf-4d7d-bbf7-a622c3d97b65']) {
+            sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.233.50.4:/opt/apache-tomcat-9.0.48/webapps"
+}
+    stage("SendEmailNotification"){
+        emailext body: '''Build is done
+
+Regards''', subject: 'Build is over', to: 'maniavm2303@gmail.com'
+    }
+    }
+    }
+    }
+    }
+}
